@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "readwise-linker",
+	"name": "Readwise Linker",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Retrieves the original URL for your Readwise highlights, making it easier to cite sources in Obsidian.",
+	"author": "Joe Scharf",
+	"authorUrl": "https://github.com/joescharf/obsidian-readwise-linker",
+	"fundingUrl": "",
 	"isDesktopOnly": false
 }

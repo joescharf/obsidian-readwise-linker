@@ -1,94 +1,71 @@
-# Obsidian Sample Plugin
+# Obsidian Readwise Linker
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Obsidian Readwise Linker enhances your workflow by making your Readwise highlights in Obsidian more actionable and accessible.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+Importing Readwise highlights into Obsidian is a great way to keep your notes and research organized. However, sharing and citing highlights with links to the original articles can be cumbersome.
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+## Features
 
-## First time developing plugins?
+-   Detects Readwise links in your notes and surfaces the original article URL and full title.
+-   On hover of a Readwise `View Highlight` link, quickly copy:
+    -   The original article URL
+    -   A URL with a text fragment highlighting your selected passage
+    -   A Markdown link to the article with the highlight fragment
+-   Works automatically as you browse your notes.
 
-Quick starting guide for new plugin devs:
+## Example
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+Here are some sample highlights of the [MDN Text fragments](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments) page from the MDN Web Docs.
 
-## Releasing new releases
+### Highlighted on [[2025-05-30]] at 1:06 PM
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+-   **Text fragments** allow linking directly to a specific portion of text in a web document, without requiring the author to annotate it with an ID, using particular syntax in the URL fragment. ([View Highlight](https://read.readwise.io/read/...))
+-   If the ID is changed or removed, the document fragment is ignored, and the link just links through to the top of the page. ([View Highlight](https://read.readwise.io/read/...))
+-   **Text fragments** make this a reality — they allow link authors to specify text content to link to, rather than document fragments, in a flexible manner. ([View Highlight](https://read.readwise.io/read/...)) ^6e28cb
+-   **Note:** If the provided text fragment does not match any text in the linked document, or if the browser does not support text fragments, the whole text fragment is ignored and the top of the document is linked. ([View Highlight](https://read.readwise.io/read/...))
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+### How it works
 
-## Adding your plugin to the community plugin list
+When I hover over the `View Highlight` links, I can quickly copy useful links to my clipboard, for example - the first highlight:
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+1.  Hover over the link: `View Highlight` and a markdown-formatted link with the original article URL with text fragment is copied to the clipboard. This is useful for citing the original source with a link that highlights the specific passage.
 
-## How to use
+`[MDN Text fragments](https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments#:~:text=Text%20fragments%20allow%20linking%20directly,annotate%20it%20with%20an%20ID.)`
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+2.  If I hold **Cmd (Mac) / Ctrl (Windows)** while hovering, it copies a URL with a text fragment that highlights the selected passage. You can paste this link into a browser to see the highlight in action.
 
-## Manually installing the plugin
+`https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments#:~:text=Text%20fragments%20make%20this%20a,fragments%2C%20in%20a%20flexible%20manner.`
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+3.  If I hold **Alt** while hovering, it copies the original article URL to the clipboard.
 
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint .\src\`
+    `https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Fragment/Text_fragments`
 
-## Funding URL
+## How to Use
 
-You can include funding URLs where people who use your plugin can financially support it.
+1. **Install the plugin** in your Obsidian vault.
+2. **Open any note** containing Readwise highlights (typically, these are list items with a link to readwise.io).
+3. **Hover over a Readwise link**. After a short delay, the plugin will:
+    - Search your vault for the corresponding highlight and its metadata.
+    - Copy a useful link or snippet to your clipboard, depending on which modifier keys you hold:
+        - **Cmd (Mac) / Ctrl (Windows)**: Copy the article URL with a highlight fragment
+        - **Alt**: Copy the original article URL
+        - **No modifier**: Copy a Markdown link to the article with the highlight fragment
+    - (Optionally) Show a popup with the article title, URL, and highlight snippet.
 
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
+## Settings
 
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
-```
+-   You can configure plugin settings from the Obsidian settings tab (currently only a placeholder setting).
 
-If you have multiple URLs, you can also do:
+## Requirements
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
+-   You must have Readwise highlights imported into your Obsidian vault as Markdown files.
 
-## API Documentation
+## Why use this?
 
-See https://github.com/obsidianmd/obsidian-api
+-   Quickly cite or revisit the original source of your highlights.
+-   Share precise highlight links with others or in your own research.
+-   Save time copying and formatting links for your notes and writing.
+
+---
+
+For questions or issues, see the [GitHub repo](https://github.com/joescharf/obsidian-readwise-linker).
