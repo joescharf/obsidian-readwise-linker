@@ -1,6 +1,8 @@
 # Obsidian Readwise Linker
 
-Obsidian Readwise Linker enhances workflow by making exported Readwise highlights more actionable and accessible.
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/joescharf)
+
+Obsidian Readwise Linker enhances your workflow by making exported Readwise highlights more actionable and accessible.
 
 Importing Readwise highlights into Obsidian is a great way to keep notes and research organized. However, sharing and citing highlights with links to the original articles can be cumbersome. In many workflows, highlights from Readwise are included in notes and research reports using the `![[Article^highlight]]` or `![[Article#section]]` syntax. This plugin allows quick citation of the original source of highlights in footnotes and links without having to navigate to the original Readwise note.
 
