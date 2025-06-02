@@ -6,6 +6,6 @@
 	"description": "Retrieves the original URL for your Readwise highlights, making it easier to cite sources in Obsidian.",
 	"author": "Joe Scharf",
 	"authorUrl": "https://github.com/joescharf/obsidian-readwise-linker",
-	"fundingUrl": "",
+	"fundingUrl": "https://coff.ee/joescharf",
 	"isDesktopOnly": false
 }
