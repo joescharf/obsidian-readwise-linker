@@ -1,6 +1,7 @@
 # Obsidian Readwise Linker
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://www.buymeacoffee.com/joescharf)
+[![GitHub license](https://img.shields.io/github/license/joescharf/obsidian-readwise-linker?style=flat-square)](https://github.com/joescharf/obsidian-readwise-linker/blob/main/LICENSE)
 
 Obsidian Readwise Linker enhances your workflow by making exported Readwise highlights more actionable and accessible.
 
