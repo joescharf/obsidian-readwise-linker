@@ -3,11 +3,11 @@ import { App, Notice, Plugin, PluginSettingTab, Setting } from "obsidian";
 // Remember to rename these classes and interfaces!
 
 interface ReadwiseLinkerSettings {
-	mySetting: string;
+	debugSetting: boolean;
 }
 
 const DEFAULT_SETTINGS: ReadwiseLinkerSettings = {
-	mySetting: "default",
+	debugSetting: false,
 };
 
 export default class ReadwiseLinker extends Plugin {
@@ -16,62 +16,8 @@ export default class ReadwiseLinker extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
-		// This creates an icon in the left ribbon.
-		// const ribbonIconEl = this.addRibbonIcon(
-		// 	"dice",
-		// 	"Readwise Linker",
-		// 	(evt: MouseEvent) => {
-		// 		// Called when the user clicks the icon.
-		// 		new Notice("This is a notice! Consider yourself noticed.");
-		// 	}
-		// );
-		// // Perform additional things with the ribbon
-		// ribbonIconEl.addClass("my-plugin-ribbon-class");
-
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		// const statusBarItemEl = this.addStatusBarItem();
-		// statusBarItemEl.setText("Status Bar Text");
-
-		// This adds a simple command that can be triggered anywhere
-		// this.addCommand({
-		// 	id: "open-sample-modal-simple",
-		// 	name: "Open sample modal (simple)",
-		// 	callback: () => {
-		// 		new SampleModal(this.app).open();
-		// 	},
-		// });
-		// // This adds an editor command that can perform some operation on the current editor instance
-		// this.addCommand({
-		// 	id: "sample-editor-command",
-		// 	name: "Sample editor command",
-		// 	editorCallback: (editor: Editor, view: MarkdownView) => {
-		// 		console.log(editor.getSelection());
-		// 		editor.replaceSelection("Sample Editor Command");
-		// 	},
-		// });
-		// // This adds a complex command that can check whether the current state of the app allows execution of the command
-		// this.addCommand({
-		// 	id: "open-sample-modal-complex",
-		// 	name: "Open sample modal (complex)",
-		// 	checkCallback: (checking: boolean) => {
-		// 		// Conditions to check
-		// 		const markdownView =
-		// 			this.app.workspace.getActiveViewOfType(MarkdownView);
-		// 		if (markdownView) {
-		// 			// If checking is true, we're simply "checking" if the command can be run.
-		// 			// If checking is false, then we want to actually perform the operation.
-		// 			if (!checking) {
-		// 				new SampleModal(this.app).open();
-		// 			}
-
-		// 			// This command will only show up in Command Palette when the check function returns true
-		// 			return true;
-		// 		}
-		// 	},
-		// });
-
 		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
+		this.addSettingTab(new RWLSettingTab(this.app, this));
 
 		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
 		// Using this function will automatically remove the event listener when this plugin is disabled.
@@ -93,7 +39,9 @@ export default class ReadwiseLinker extends Plugin {
 					evt.target instanceof HTMLAnchorElement ? evt.target : null;
 				if (!anchor || !anchor.href.includes("readwise.io")) return;
 
-				console.log("Hover over Readwise link:", anchor.href);
+				if (this.settings.debugSetting) {
+					console.log("Hovered over Readwise link:", anchor.href);
+				}
 				const articleContent = await this.findReadwiseArticleByUrl(
 					anchor.href,
 					anchor
@@ -169,7 +117,10 @@ export default class ReadwiseLinker extends Plugin {
 		url: string,
 		target?: HTMLElement
 	): Promise<string | null> {
-		console.log(`Searching for Readwise article with URL: ${url}`);
+		// Check if the URL is already in the vault
+		if (this.settings.debugSetting) {
+			console.log("Searching for Readwise article with URL:", url);
+		}
 		const files = this.app.vault.getMarkdownFiles();
 		for (const file of files) {
 			const content = await this.app.vault.read(file);
@@ -245,11 +196,14 @@ export default class ReadwiseLinker extends Plugin {
 							}
 						}, 500);
 					}
-					console.log("Markdown URL:", markdownUrl);
-					console.log(
-						"Markdown URL with highlight:",
-						markdownUrlWithHighlight
-					);
+					// Log the URLs if debug mode is enabled
+					if (this.settings.debugSetting) {
+						console.log("Markdown URL:", markdownUrl);
+						console.log(
+							"Markdown URL with highlight:",
+							markdownUrlWithHighlight
+						);
+					}
 				}
 				const popupText = this.buildPopupText(
 					file,
@@ -258,14 +212,17 @@ export default class ReadwiseLinker extends Plugin {
 					markdownUrl,
 					markdownUrlWithHighlight
 				);
-				console.log("Readwise URL: ", url);
-				console.log("File Basename: ", file.basename);
-				console.log("Full Title: ", metadata.title);
-				console.log("Original URL: ", metadata.url);
-				console.log("HighLight URL: ", markdownUrlWithHighlight);
-				console.log("Markdown URL: ", markdownUrl);
-				console.log("Highlight: ", highlight);
-				console.log("Snippet: ", snippet);
+				// Only log if debug mode is enabled
+				if (this.settings.debugSetting) {
+					console.log("Readwise URL: ", url);
+					console.log("File Basename: ", file.basename);
+					console.log("Full Title: ", metadata.title);
+					console.log("Original URL: ", metadata.url);
+					console.log("HighLight URL: ", markdownUrlWithHighlight);
+					console.log("Markdown URL: ", markdownUrl);
+					console.log("Highlight: ", highlight);
+					console.log("Snippet: ", snippet);
+				}
 				return popupText;
 			}
 		}
@@ -334,7 +291,7 @@ export default class ReadwiseLinker extends Plugin {
 	}
 }
 
-class SampleSettingTab extends PluginSettingTab {
+class RWLSettingTab extends PluginSettingTab {
 	plugin: ReadwiseLinker;
 
 	constructor(app: App, plugin: ReadwiseLinker) {
@@ -348,14 +305,13 @@ class SampleSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName("Setting #1")
-			.setDesc("It's a secret")
-			.addText((text) =>
-				text
-					.setPlaceholder("Enter your secret")
-					.setValue(this.plugin.settings.mySetting)
+			.setName("Debug Mode?")
+			.setDesc("Enable debug mode for verbose logging")
+			.addToggle((toggle) =>
+				toggle
+					.setValue(this.plugin.settings.debugSetting)
 					.onChange(async (value) => {
-						this.plugin.settings.mySetting = value;
+						this.plugin.settings.debugSetting = value;
 						await this.plugin.saveSettings();
 					})
 			);
