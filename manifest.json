@@ -1,9 +1,9 @@
 {
 	"id": "readwise-linker",
 	"name": "Readwise Linker",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Retrieves the original URL for your Readwise highlights, making it easier to cite sources in Obsidian.",
+	"description": "Retrieves the original URL for your Readwise highlights, making it easier to cite sources.",
 	"author": "Joe Scharf",
 	"authorUrl": "https://github.com/joescharf/obsidian-readwise-linker",
 	"fundingUrl": "https://coff.ee/joescharf",
