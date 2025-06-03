@@ -46,9 +46,6 @@ export default class ReadwiseLinker extends Plugin {
 					anchor.href,
 					anchor
 				);
-				if (articleContent) {
-					// this.showHoverPopup(anchor, articleContent);
-				}
 			}
 		);
 	}
@@ -265,30 +262,6 @@ export default class ReadwiseLinker extends Plugin {
 		}
 		return { url, title };
 	}
-
-	// Helper to show a hover popup
-	showHoverPopup(target: HTMLElement, content: string) {
-		// Simple implementation: show a tooltip near the link
-		const popup = document.createElement("div");
-		popup.className = "readwise-hover-popup";
-		popup.textContent = content;
-		popup.style.position = "absolute";
-		popup.style.background = "#222";
-		popup.style.color = "#fff";
-		popup.style.padding = "8px";
-		popup.style.borderRadius = "6px";
-		popup.style.zIndex = "9999";
-		const rect = target.getBoundingClientRect();
-		popup.style.left = `${rect.left + window.scrollX}px`;
-		popup.style.top = `${rect.bottom + window.scrollY + 5}px`;
-		document.body.appendChild(popup);
-
-		const removePopup = () => {
-			popup.remove();
-			target.removeEventListener("mouseleave", removePopup);
-		};
-		target.addEventListener("mouseleave", removePopup);
-	}
 }
 
 class RWLSettingTab extends PluginSettingTab {
@@ -305,7 +278,7 @@ class RWLSettingTab extends PluginSettingTab {
 		containerEl.empty();
 
 		new Setting(containerEl)
-			.setName("Debug Mode?")
+			.setName("Debug Mode")
 			.setDesc("Enable debug mode for verbose logging")
 			.addToggle((toggle) =>
 				toggle

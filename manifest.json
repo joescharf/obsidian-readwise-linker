@@ -1,7 +1,7 @@
 {
 	"id": "readwise-linker",
 	"name": "Readwise Linker",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Retrieves the original URL for your Readwise highlights, making it easier to cite sources.",
 	"author": "Joe Scharf",

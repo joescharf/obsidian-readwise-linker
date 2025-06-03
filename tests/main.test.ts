@@ -9,6 +9,18 @@ const mockApp = {
 	workspace: {}, // Add workspace property to mockApp
 };
 
+// Instead of casting, define a minimal mock TFile object with required properties for the test
+function createMockTFile(path: string): import("obsidian").TFile {
+	return {
+		path,
+		stat: {} as any,
+		basename: path.replace(/.*\//, "").replace(/\.md$/, ""),
+		extension: "md",
+		vault: {} as any,
+		name: path.replace(/.*\//, ""),
+	} as import("obsidian").TFile;
+}
+
 describe("getMetadataFromNote", () => {
 	let plugin: JoePlugin;
 	const mockManifest = {
@@ -35,7 +47,7 @@ describe("getMetadataFromNote", () => {
 		mockRead.mockResolvedValue(
 			`Some note\n\n## Metadata\n- URL: https://example.com\n- Full Title: Example Title\n\n## Highlights\n- something else`
 		);
-		const file = { path: "dummy.md" } as import("obsidian").TFile;
+		const file = createMockTFile("dummy.md");
 		const result = await plugin.getMetadataFromNote(file);
 		expect(result).toEqual({
 			url: "https://example.com",
@@ -45,7 +57,7 @@ describe("getMetadataFromNote", () => {
 
 	it("returns nulls if Metadata section is missing", async () => {
 		mockRead.mockResolvedValue("No metadata here");
-		const file = { path: "dummy.md" } as import("obsidian").TFile;
+		const file = createMockTFile("dummy.md");
 		const result = await plugin.getMetadataFromNote(file);
 		expect(result).toEqual({ url: null, title: null });
 	});
@@ -54,7 +66,7 @@ describe("getMetadataFromNote", () => {
 		mockRead.mockResolvedValue(
 			`irrelevant\n\n## metadata\n   - url: https://foo.com\n   - full title:   Foo Bar   \n# Next Section`
 		);
-		const file = { path: "dummy.md" } as import("obsidian").TFile;
+		const file = createMockTFile("dummy.md");
 		const result = await plugin.getMetadataFromNote(file);
 		expect(result).toEqual({ url: "https://foo.com", title: "Foo Bar" });
 	});
@@ -63,14 +75,14 @@ describe("getMetadataFromNote", () => {
 		mockRead.mockResolvedValue(
 			`## Metadata\n- URL: https://a.com\n- Full Title: A\n## Something else\n- URL: https://b.com\n- Full Title: B`
 		);
-		const file = { path: "dummy.md" } as import("obsidian").TFile;
+		const file = createMockTFile("dummy.md");
 		const result = await plugin.getMetadataFromNote(file);
 		expect(result).toEqual({ url: "https://a.com", title: "A" });
 	});
 
 	it("returns null for missing url or title", async () => {
 		mockRead.mockResolvedValue(`## Metadata\n- Full Title: Only Title`);
-		const file = { path: "dummy.md" } as import("obsidian").TFile;
+		const file = createMockTFile("dummy.md");
 		const result = await plugin.getMetadataFromNote(file);
 		expect(result).toEqual({ url: null, title: "Only Title" });
 
